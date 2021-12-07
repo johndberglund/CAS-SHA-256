@@ -1,0 +1,54 @@
+<html>
+  <head>
+    <title>CAS SHA-256 calculations</title>
+    <script src="http://geraintluff.github.io/sha256/sha256.min.js"></script>
+  </head>
+  <body>
+    <h1>CAS SHA-256 calculations</h1>
+    This page is to explore the CAS <a href="https://www.casact.org/actuarial-review">Actuarial Review</a> "Solve This" puzzle from Nov./Dec. 2021. It will place the numbers in the given range after "Casualty Actuarial Society" and find the SHA-256 value of that. We want to begin with lots of zeros.
+    <br>
+    Thanks to Geraint Luff for this  
+    <a href="https://github.com/geraintluff/sha256">JavaScript implementation</a> of SHA-256.
+    <br>
+    Place numbers in the Minimum and Maximum. Hit the "Search" button to find the best nonce in that range, if any are better than the current best nonce.
+    <br>	
+    Minimum
+    <br>
+    <textarea rows=1 id="min">0</textarea>
+    <br>
+    Maximum
+    <br>
+    <textarea rows=1 id="max">100000</textarea>
+    <br>
+    Best Nonce
+    <br>
+    <textarea rows=1 id="bestNonce"></textarea>
+    <br>
+    Best SHA-256
+    <br>
+    <textarea rows=1 style="width:100%" id="bestSha">fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+    </textarea>
+    <br>
+    <input id="newButton" type="button" onclick="myFunction()" value="Search" />
+    <script>
+      function myFunction() {
+        var baseText = "Casualty Actuarial Society";
+        var lowSha = document.getElementById('bestSha').value;
+        var betterNonce = [];
+	var min = parseInt(document.getElementById('min').value);
+	var max = parseInt(document.getElementById('max').value);
+        for (i=min;i<=max;i++) {
+          var myText=baseText+i;
+          var newSha = sha256(myText);
+          if (newSha < lowSha) {
+            lowSha = newSha;
+            document.getElementById('bestSha').value = lowSha;
+            document.getElementById('bestNonce').value = i;
+            betterNonce.push(i);
+          }
+        }
+        alert(betterNonce);
+      }
+    </script>		
+  </body>
+</html>
